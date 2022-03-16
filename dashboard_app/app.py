@@ -373,8 +373,8 @@ def comparison_update(xaxis_column_name, yaxis_column_name, classe, n_clicks, id
     dff = df_val.copy()
     dff['CLASS'] = classification_lst
     dff['SCORE'] = score_lst
-    dff.drop(['SK_ID_CURR'], axis=1, inplace=True)
-
+    hover_lst = dff['SK_ID_CURR']
+    
     ## Dataframe per class
     dff_class = dff.copy()
     if classe=='Client':
@@ -382,16 +382,22 @@ def comparison_update(xaxis_column_name, yaxis_column_name, classe, n_clicks, id
         # Colors and sizes
         size_rule = dff_class['CLASS']==1
         dff_class['dummy_column_for_size'] = [0.1 if x==False else 2 for x in size_rule]
+        hover_lst = dff_class['SK_ID_CURR']
 
     if classe=='Classe 0':
         dff_class = dff.copy()
         dff_class = dff_class[dff_class['CLASS']==0]
         dff_class['dummy_column_for_size'] = 0.1
+        hover_lst = dff_class['SK_ID_CURR']
 
     if classe=='Classe 1':
         dff_class = dff.copy()
         dff_class = dff_class[dff_class['CLASS']==1]
         dff_class['dummy_column_for_size'] = 2
+        hover_lst = dff_class['SK_ID_CURR']
+
+    dff.drop(['SK_ID_CURR'], axis=1, inplace=True)
+    dff_class.drop(['SK_ID_CURR'], axis=1, inplace=True)
 
     # Scatter plot
     #Build the figure
@@ -402,7 +408,7 @@ def comparison_update(xaxis_column_name, yaxis_column_name, classe, n_clicks, id
             color_continuous_scale=px.colors.sequential.Viridis,
             opacity=0.8,
             size=dff_class['dummy_column_for_size'],
-            #hover_name=dff_class['SK_ID_CURR'],
+            hover_name=hover_lst,
             height=400,
             )
 
