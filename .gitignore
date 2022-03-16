@@ -1,0 +1,7 @@
+*.pyc
+__pycache__
+.notification_app/static/tmp/*.png
+geckodriver.log
+.cache/
+.env
+*.sqlite3
